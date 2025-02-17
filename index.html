@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>可以成为我的恋人吗？</title>
-
     <style>
       body {
         background-color: #f1d5da; /* 浅粉色 */
@@ -132,6 +131,10 @@
       let questionText = document.getElementById("question");
       let mainImage = document.getElementById("mainImage");
 
+      // 创建音频对象
+      const audio = new Audio("images/Hello.mp3"); // 替换为你的音频文件路径
+      let audioPlayed = false; // 标志变量，确保音频只播放一次
+
       const params = new URLSearchParams(window.location.search);
       let username = params.get("name");
 
@@ -158,6 +161,12 @@
       // No 按钮点击事件
       noButton.addEventListener("click", function () {
         clickCount++;
+
+        // 播放音频（只在第一次点击时播放）
+        if (!audioPlayed) {
+          audio.play();
+          audioPlayed = true; // 设置标志，确保只播放一次
+        }
 
         // 让 Yes 变大，每次放大 2 倍
         let yesSize = 1 + clickCount * 1.2;
@@ -191,13 +200,19 @@
       }`;
 
       yesButton.addEventListener("click", function () {
+        // 播放音频（只在第一次点击时播放）
+        if (!audioPlayed) {
+          audio.play();
+          audioPlayed = true; // 设置标志，确保只播放一次
+        }
+
         // 先创建基础 HTML 结构
         document.body.innerHTML = `
-        <div class="yes-screen">
-            <h1 class="yes-text"></h1>
-            <img src="images/hug.png" alt="拥抱" class="yes-image">
-        </div>
-    `;
+          <div class="yes-screen">
+              <h1 class="yes-text"></h1>
+              <img src="images/hug.png" alt="拥抱" class="yes-image">
+          </div>
+        `;
 
         // 确保用户名安全地插入
         document.querySelector(".yes-text").innerText = loveTest;
