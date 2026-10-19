@@ -1,0 +1,16 @@
+# 本地代理/调试产物（含密钥，绝不入库）
+/argo-node/
+/.shim/
+
+# 依赖与构建
+node_modules/
+venv/
+__pycache__/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+.idea/
+.vscode/
