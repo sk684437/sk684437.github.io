@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>页面走丢了 · 可以成为我的恋人吗？</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#f1d5da" />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(16px, 4vw, 40px);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+        color: #5f3d4c;
+        text-align: center;
+        background: radial-gradient(1000px 520px at 10% -10%, #fff 0%, transparent 60%),
+          linear-gradient(158deg, #fbe9ee 0%, #f1d5da 56%, #e6c1cf 100%);
+      }
+
+      .card {
+        width: 100%;
+        max-width: 460px;
+        padding: clamp(26px, 6vw, 46px) clamp(20px, 5vw, 38px);
+        background: rgba(255, 255, 255, 0.62);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 28px;
+        box-shadow: 0 24px 60px rgba(155, 90, 110, 0.2);
+        backdrop-filter: blur(16px) saturate(140%);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+      }
+
+      img {
+        width: clamp(120px, 34vw, 170px);
+        height: auto;
+        filter: drop-shadow(0 12px 20px rgba(180, 110, 130, 0.22));
+      }
+
+      h1 {
+        margin: 18px 0 10px;
+        font-size: clamp(20px, 5.4vw, 28px);
+      }
+
+      p {
+        margin: 0 0 26px;
+        color: #a98494;
+        font-size: clamp(13px, 3.6vw, 15px);
+        line-height: 1.7;
+      }
+
+      a {
+        display: inline-block;
+        padding: 12px 30px;
+        border-radius: 999px;
+        color: #fff;
+        font-weight: 600;
+        font-size: clamp(15px, 3.9vw, 17px);
+        text-decoration: none;
+        background: linear-gradient(135deg, #f2a0b3, #d4818e);
+        box-shadow: 0 10px 24px rgba(212, 129, 142, 0.42);
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+      }
+
+      a:hover {
+        box-shadow: 0 14px 30px rgba(212, 129, 142, 0.55);
+      }
+
+      a:active {
+        transform: scale(0.96);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <picture>
+        <source srcset="/images/crying.webp" type="image/webp" />
+        <img src="/images/crying.png" alt="哭泣" width="240" height="240" />
+      </picture>
+      <h1>这个页面…不想见你</h1>
+      <p>它可能被删掉了，或者地址打错了。<br />不过没关系，还有人在等你。</p>
+      <a href="/">回到表白页</a>
+    </main>
+  </body>
+</html>

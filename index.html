@@ -2,224 +2,595 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>可以成为我的恋人吗？</title>
+
+    <!-- 基础信息 -->
+    <meta name="description" content="一个有点小心机的表白小页面：敢点「不要」试试看吗？" />
+    <meta name="author" content="sk684437" />
+    <meta name="theme-color" content="#f1d5da" />
+    <link rel="canonical" href="https://daniu.dpdns.org/" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="apple-touch-icon" href="images/heart.png" />
+    <link rel="preload" as="image" href="images/heart.webp" type="image/webp" />
+
+    <!-- 分享卡片（微信 / QQ / Twitter 等） -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="可以成为我的恋人吗？" />
+    <meta property="og:title" content="可以成为我的恋人吗？" />
+    <meta property="og:description" content="点「不要」会有惊喜…" />
+    <meta property="og:url" content="https://daniu.dpdns.org/" />
+    <meta property="og:image" content="https://daniu.dpdns.org/images/og-cover.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="可以成为我的恋人吗？" />
+    <meta name="twitter:description" content="点「不要」会有惊喜…" />
+    <meta name="twitter:image" content="https://daniu.dpdns.org/images/og-cover.png" />
+
     <style>
+      :root {
+        --pink-200: #f1d5da;
+        --pink-500: #d4818e;
+        --pink-600: #c06676;
+        --ink: #5f3d4c;
+        --blue: #6784b1;
+        --card: rgba(255, 255, 255, 0.62);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
       body {
-        background-color: #f1d5da; /* 浅粉色 */
-        text-align: center;
-        font-family: Arial, sans-serif;
         margin: 0;
-        padding: 0;
+        min-height: 100vh;
+        min-height: 100dvh; /* 规避移动端地址栏导致的 100vh 抖动 */
         display: flex;
-        justify-content: center;
         align-items: center;
-        height: 100vh;
+        justify-content: center;
+        padding: clamp(14px, 4vw, 40px);
+        overflow-x: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+        color: var(--ink);
+        background: radial-gradient(1100px 560px at 8% -12%, #ffffff 0%, transparent 58%),
+          radial-gradient(900px 520px at 104% -6%, #ffe4ec 0%, transparent 52%),
+          linear-gradient(158deg, #fbe9ee 0%, var(--pink-200) 56%, #e6c1cf 100%);
+        -webkit-tap-highlight-color: transparent;
       }
 
-      .container {
-        width: 90%; /* 适应手机屏幕宽度 */
-        max-width: 500px; /* 最大宽度限制 */
+      /* ---------- 背景漂浮爱心 ---------- */
+      .hearts {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
       }
 
-      #mainImage {
-        width: 100%; /* 图片宽度自适应容器 */
-        max-width: 200px; /* 最大宽度限制 */
-        transition: all 0.3s ease;
+      .heart-float {
+        position: absolute;
+        bottom: -6vh;
+        font-size: var(--s, 18px);
+        color: var(--c, #e9a9b8);
+        opacity: 0;
+        animation: floatUp var(--d, 14s) linear var(--delay, 0s) infinite;
+        will-change: transform, opacity;
+      }
+
+      @keyframes floatUp {
+        0% {
+          transform: translate3d(0, 0, 0) rotate(0deg);
+          opacity: 0;
+        }
+        12% {
+          opacity: var(--o, 0.5);
+        }
+        88% {
+          opacity: var(--o, 0.5);
+        }
+        100% {
+          transform: translate3d(var(--x, 0px), -112vh, 0) rotate(var(--r, 20deg));
+          opacity: 0;
+        }
+      }
+
+      /* ---------- 主卡片 ---------- */
+      .card {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 520px;
+        padding: clamp(22px, 6vw, 44px) clamp(18px, 5vw, 38px);
+        text-align: center;
+        background: var(--card);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 28px;
+        box-shadow: 0 24px 60px rgba(155, 90, 110, 0.2), 0 2px 6px rgba(155, 90, 110, 0.08);
+        backdrop-filter: blur(16px) saturate(140%);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+        animation: cardIn 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+
+      .card[hidden] {
+        display: none;
+      }
+
+      @keyframes cardIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .avatar {
+        width: clamp(124px, 34vw, 188px);
+      }
+
+      .avatar img {
+        display: block;
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 12px 20px rgba(180, 110, 130, 0.22));
+        transition: transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
       }
 
       h1 {
-        font-size: 5vw; /* 字体大小根据视口宽度变化 */
-        color: #68495b;
-        margin: 20px 0; /* 增加上下间距 */
+        margin: 18px 0 8px;
+        font-size: clamp(20px, 5.2vw, 30px);
+        line-height: 1.45;
+        font-weight: 700;
+        letter-spacing: 0.4px;
       }
 
-      button {
-        font-size: 4vw; /* 字体大小根据视口宽度变化 */
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
+      h1 .name {
+        color: var(--pink-600);
+      }
+
+      .hint {
+        margin: 0 0 clamp(20px, 5vw, 30px);
+        font-size: clamp(12px, 3.2vw, 14px);
+        color: #a98494;
+      }
+
+      /* ---------- 按钮 ---------- */
+      .buttons,
+      .success-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(10px, 3vw, 18px);
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        font: inherit;
+        font-weight: 600;
+        border: 0;
+        border-radius: 999px;
         cursor: pointer;
-        margin: 10px;
-        transition: all 0.3s ease;
+        padding: clamp(10px, 2.6vw, 14px) clamp(22px, 6vw, 34px);
+        font-size: clamp(15px, 3.9vw, 18px);
+        transition: transform 0.26s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.26s ease, background-color 0.26s ease;
+        will-change: transform;
       }
 
-      #yes {
-        background-color: #d4818e; /* 粉色 */
-        color: white;
+      .btn:focus-visible {
+        outline: 3px solid rgba(212, 129, 142, 0.45);
+        outline-offset: 3px;
       }
 
-      #no {
-        background-color: #6784b1; /* 蓝色 */
-        color: white;
-        position: relative;
+      .btn:active {
+        transform: scale(0.96);
       }
 
-      .yes-screen {
+      .btn-yes {
+        color: #fff;
+        background: linear-gradient(135deg, #f2a0b3, #d4818e);
+        box-shadow: 0 10px 24px rgba(212, 129, 142, 0.42);
+      }
+
+      .btn-no {
+        color: var(--blue);
+        background: #fff;
+        border: 1px solid #c7d4e6;
+        box-shadow: 0 6px 16px rgba(103, 132, 177, 0.15);
+      }
+
+      .btn-ghost {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(95, 61, 76, 0.18);
+      }
+
+      @media (hover: hover) {
+        .btn-yes:hover {
+          box-shadow: 0 14px 30px rgba(212, 129, 142, 0.55);
+        }
+        .btn-no:hover {
+          background: #f4f8ff;
+        }
+        .btn-ghost:hover {
+          background: rgba(255, 255, 255, 0.85);
+        }
+      }
+
+      /* ---------- 成功页 ---------- */
+      .success {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: #ffdae0; /* 粉色 */
+        inset: 0;
+        z-index: 5;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: clamp(12px, 3vh, 24px);
+        padding: clamp(20px, 5vw, 40px);
+        text-align: center;
+        overflow: hidden;
+        background: radial-gradient(900px 560px at 50% -8%, #fff 0%, transparent 60%),
+          linear-gradient(158deg, #ffe7ee 0%, #f7cfda 58%, #edb9c8 100%);
+        animation: fadeIn 0.45s ease both;
       }
 
-      .yes-text {
-        font-size: 7vw; /* 字体大小根据视口宽度变化 */
+      .success[hidden] {
+        display: none;
       }
 
-      .yes-image {
-        width: 50%; /* 图片宽度自适应容器 */
-        max-width: 300px; /* 最大宽度限制 */
-      }
-
-      /* 电脑端样式优化 */
-      @media (min-width: 768px) {
-        body {
-          display: block;
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
-
-        .container {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          width: auto;
-          max-width: none;
-        }
-
-        #mainImage {
-          width: 200px; /* 固定图片宽度 */
-        }
-
-        h1 {
-          font-size: 28px; /* 固定字体大小 */
-          margin: 20px 0;
-        }
-
-        button {
-          font-size: 18px; /* 固定字体大小 */
-        }
-
-        .yes-text {
-          font-size: 36px; /* 固定字体大小 */
-        }
-
-        .yes-image {
-          width: 300px; /* 固定图片宽度 */
+        to {
+          opacity: 1;
         }
       }
+
+      .success h2 {
+        margin: 0;
+        font-size: clamp(22px, 6vw, 38px);
+        line-height: 1.5;
+        color: #a94e67;
+        text-shadow: 0 2px 0 rgba(255, 255, 255, 0.55);
+      }
+
+      .success img {
+        width: clamp(150px, 42vw, 270px);
+        height: auto;
+        filter: drop-shadow(0 16px 26px rgba(170, 80, 105, 0.25));
+        animation: popIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+
+      @keyframes popIn {
+        from {
+          opacity: 0;
+          transform: scale(0.86);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      .success-hearts {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .burst-heart {
+        position: absolute;
+        font-size: var(--s, 16px);
+        color: var(--c, #e08ba0);
+        opacity: 0;
+        animation: burst var(--d, 1.8s) ease-out var(--delay, 0s) forwards;
+      }
+
+      @keyframes burst {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0) scale(0.6);
+        }
+        15% {
+          opacity: 0.9;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(var(--x, 0px), calc(-1 * var(--y, 240px))) scale(1.15)
+            rotate(var(--r, 30deg));
+        }
+      }
+
+      /* ---------- 提示条 ---------- */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 28px;
+        z-index: 20;
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: rgba(95, 61, 76, 0.9);
+        color: #fff;
+        font-size: 14px;
+        box-shadow: 0 10px 24px rgba(95, 61, 76, 0.25);
+        animation: toastIn 0.3s ease both;
+        transform: translateX(-50%);
+      }
+
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 10px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      .noscript {
+        margin-top: 16px;
+        font-size: 14px;
+        color: #a98494;
+      }
+
+      /* ---------- 无障碍：尊重「减少动态效果」 ---------- */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+        }
+      }
+
+
     </style>
   </head>
   <body>
-    <div class="container">
-      <img id="mainImage" src="images/heart.png" alt="爱心" />
-      <h1 id="question">可以成为我的恋人吗？</h1>
-      <div class="buttons">
-        <button id="yes">可以</button>
-        <button id="no">不要</button>
+    <div class="hearts" id="bgHearts" aria-hidden="true"></div>
+
+    <main class="card" id="card">
+      <div class="avatar">
+        <picture>
+          <source id="mainSource" srcset="images/heart.webp" type="image/webp" />
+          <img
+            id="mainImage"
+            src="images/heart.png"
+            alt="爱心"
+            width="240"
+            height="240"
+            decoding="async"
+          />
+        </picture>
       </div>
-    </div>
+
+      <h1 id="question" aria-live="polite">可以成为我的恋人吗？</h1>
+      <p class="hint">提示：点「不要」会有惊喜 👀</p>
+
+      <div class="buttons">
+        <button type="button" id="yes" class="btn btn-yes">可以</button>
+        <button type="button" id="no" class="btn btn-no">不要</button>
+      </div>
+
+      <noscript>
+        <p class="noscript">这个页面需要开启 JavaScript 才能互动哦～</p>
+      </noscript>
+    </main>
+
+    <section class="success" id="success" hidden>
+      <div class="success-hearts" id="successHearts" aria-hidden="true"></div>
+      <h2 id="yesText"></h2>
+      <picture>
+        <source srcset="images/hug.webp" type="image/webp" />
+        <img src="images/hug.png" alt="拥抱" width="240" height="240" decoding="async" />
+      </picture>
+      <div class="success-actions">
+        <button type="button" id="share" class="btn btn-yes">分享给她</button>
+        <button type="button" id="again" class="btn btn-ghost">再玩一次</button>
+      </div>
+    </section>
 
     <script>
-      let yesButton = document.getElementById("yes");
-      let noButton = document.getElementById("no");
-      let questionText = document.getElementById("question");
-      let mainImage = document.getElementById("mainImage");
+      (function () {
+        "use strict";
 
-      // 创建音频对象
-      const audio = new Audio("images/Hello.mp3"); // 替换为你的音频文件路径
-      let audioPlayed = false; // 标志变量，确保音频只播放一次
+        var params = new URLSearchParams(location.search);
+        var rawName = (params.get("name") || "").trim();
+        // 按「字符」截断，避免把 emoji 的代理对切成乱码
+        var name = rawName ? Array.from(rawName).slice(0, 20).join("") : "";
 
-      const params = new URLSearchParams(window.location.search);
-      let username = params.get("name");
+        var card = document.getElementById("card");
+        var question = document.getElementById("question");
+        var mainImage = document.getElementById("mainImage");
+        var mainSource = document.getElementById("mainSource");
+        var yesBtn = document.getElementById("yes");
+        var noBtn = document.getElementById("no");
+        var success = document.getElementById("success");
+        var successHearts = document.getElementById("successHearts");
+        var yesText = document.getElementById("yesText");
+        var shareBtn = document.getElementById("share");
+        var againBtn = document.getElementById("again");
 
-      // 限制用户名长度，避免页面样式崩坏
-      const maxLength = 20;
-      const safeUsername = username ? username.substring(0, maxLength) : "???";
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      // 防止 `null` 变成 `"null"`
-      if (username) {
-        questionText.innerText = questionText.innerText + safeUsername;
-      }
-
-      let clickCount = 0; // 记录点击 No 的次数
-
-      // No 按钮的文字变化
-      const noTexts = [
-        "？你认真的吗…",
-        "要不再想想？",
-        "不许选这个！ ",
-        "我会很伤心…",
-        "不行:(",
-      ];
-
-      // No 按钮点击事件
-      noButton.addEventListener("click", function () {
-        clickCount++;
-
-        // 播放音频（只在第一次点击时播放）
-        if (!audioPlayed) {
-          audio.play();
-          audioPlayed = true; // 设置标志，确保只播放一次
+        /* 1. 名字：用 textContent 注入，天然防 XSS */
+        if (name) {
+          var span = document.createElement("span");
+          span.className = "name";
+          span.textContent = name;
+          question.appendChild(span);
+          document.title = name + "，可以成为我的恋人吗？";
         }
 
-        // 让 Yes 变大，每次放大 2 倍
-        let yesSize = 1 + clickCount * 1.2;
-        yesButton.style.transform = `scale(${yesSize})`;
-
-        // 挤压 No 按钮，每次右移 50px
-        let noOffset = clickCount * 50;
-        noButton.style.transform = `translateX(${noOffset}px)`;
-
-        // 让图片和文字往上移动
-        let moveUp = clickCount * 25;
-        mainImage.style.transform = `translateY(-${moveUp}px)`;
-        questionText.style.transform = `translateY(-${moveUp}px)`;
-
-        // No 文案变化（前 5 次变化）
-        if (clickCount <= 5) {
-          noButton.innerText = noTexts[clickCount - 1];
+        /* 2. 音频懒加载：第一次点击时才请求那 70KB */
+        var audio = null;
+        function playAudio() {
+          if (!audio) {
+            audio = new Audio("images/Hello.mp3");
+            audio.preload = "auto";
+          }
+          try {
+            audio.currentTime = 0;
+          } catch (e) {}
+          var p = audio.play();
+          if (p && p.catch) p.catch(function () {});
         }
 
-        // 图片变化（前 5 次变化）
-        if (clickCount === 1) mainImage.src = "images/shocked.png"; // 震惊
-        if (clickCount === 2) mainImage.src = "images/think.png"; // 思考
-        if (clickCount === 3) mainImage.src = "images/angry.png"; // 生气
-        if (clickCount === 4) mainImage.src = "images/crying.png"; // 哭
-        if (clickCount >= 5) mainImage.src = "images/crying.png"; // 之后一直是哭
-      });
-
-      // Yes 按钮点击后，进入表白成功页面
-      const loveTest = `!!!喜欢你!! ( >᎑<)♡︎ᐝ  ${
-        username ? `${safeUsername}  ♡︎ᐝ(>᎑< )` : ""
-      }`;
-
-      yesButton.addEventListener("click", function () {
-        // 播放音频（只在第一次点击时播放）
-        if (!audioPlayed) {
-          audio.play();
-          audioPlayed = true; // 设置标志，确保只播放一次
+        /* 3. 换图：同时更新 <source> 与 <img>，保住 WebP 优先 */
+        function setImage(base) {
+          mainSource.srcset = base + ".webp";
+          mainImage.src = base + ".png";
         }
 
-        // 先创建基础 HTML 结构
-        document.body.innerHTML = `
-          <div class="yes-screen">
-              <h1 class="yes-text"></h1>
-              <img src="images/hug.png" alt="拥抱" class="yes-image">
-          </div>
-        `;
+        var noTexts = ["？你认真的吗…", "要不再想想？", "不许选这个！", "我会很伤心…", "不行 :("];
+        var images = ["images/shocked", "images/think", "images/angry", "images/crying"];
+        var clicks = 0;
+        var played = false;
 
-        // 确保用户名安全地插入
-        document.querySelector(".yes-text").innerText = loveTest;
+        function firstPlay() {
+          if (!played) {
+            played = true;
+            playAudio();
+          }
+        }
 
-        // 禁止滚动，保持页面美观
-        document.body.style.overflow = "hidden";
-      });
+        /* 4. 点「不要」：缩放/位移都设上限，永远留在屏幕内 */
+        noBtn.addEventListener("click", function () {
+          clicks += 1;
+          firstPlay();
+
+          var yesScale = Math.min(1 + clicks * 0.3, 2.4);
+          var maxShift = Math.max(0, Math.min(window.innerWidth * 0.22, 140));
+          var noShift = Math.min(clicks * 26, maxShift);
+
+          yesBtn.style.transform = "scale(" + yesScale + ")";
+          noBtn.style.transform = "translateX(" + noShift + "px)";
+          mainImage.style.transform = "translateY(" + Math.min(clicks * 6, 24) + "px)";
+
+          if (clicks <= noTexts.length) noBtn.textContent = noTexts[clicks - 1];
+          setImage(images[Math.min(clicks - 1, images.length - 1)]);
+        });
+
+        /* 5. 点「可以」：全屏结果页 + 爱心爆发 */
+        yesBtn.addEventListener("click", function () {
+          firstPlay();
+          var text = "!!!喜欢你!! ( >᎑<)♡︎ᐝ";
+          if (name) text += "  " + name + "  ♡︎ᐝ(>᎑< )";
+          yesText.textContent = text;
+          card.hidden = true;
+          success.hidden = false;
+          document.body.style.overflow = "hidden";
+          burst();
+        });
+
+        /* 6. 再玩一次 / 分享 */
+        againBtn.addEventListener("click", function () {
+          location.href = location.pathname + (name ? "?name=" + encodeURIComponent(name) : "");
+        });
+
+        shareBtn.addEventListener("click", function () {
+          var url = location.href;
+          var data = {
+            title: document.title,
+            text: name ? name + "，可以成为我的恋人吗？" : "可以成为我的恋人吗？",
+            url: url
+          };
+          if (navigator.share) {
+            navigator.share(data).catch(function () {});
+            return;
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(
+              function () {
+                toast("链接已复制，去发给她吧～");
+              },
+              function () {
+                toast(url);
+              }
+            );
+          } else {
+            toast(url);
+          }
+        });
+
+        /* 7. 漂浮爱心 & 爆发爱心 */
+        var colors = ["#e9a9b8", "#f2c0cb", "#d98fa0", "#f7d3da"];
+        function rand(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        function makeHeart(container, className) {
+          var el = document.createElement("span");
+          el.className = className;
+          el.textContent = "♥";
+          el.style.left = rand(2, 96) + "%";
+          el.style.setProperty("--s", rand(12, 26) + "px");
+          el.style.setProperty("--c", colors[Math.floor(rand(0, colors.length))]);
+          el.style.setProperty("--o", rand(0.25, 0.6).toFixed(2));
+          el.style.setProperty("--x", rand(-40, 40).toFixed(0) + "px");
+          el.style.setProperty("--r", rand(-40, 40).toFixed(0) + "deg");
+          el.style.setProperty("--delay", rand(0, 8).toFixed(1) + "s");
+          el.style.setProperty("--d", rand(11, 20).toFixed(1) + "s");
+          container.appendChild(el);
+          return el;
+        }
+
+        if (!reduced) {
+          var bg = document.getElementById("bgHearts");
+          for (var i = 0; i < 14; i++) makeHeart(bg, "heart-float");
+        }
+
+        function burst() {
+          if (reduced) return;
+          for (var i = 0; i < 18; i++) {
+            var h = makeHeart(successHearts, "burst-heart");
+            h.style.left = rand(20, 80) + "%";
+            h.style.top = rand(55, 85) + "%";
+            h.style.setProperty("--y", rand(160, 360).toFixed(0) + "px");
+            h.style.setProperty("--x", rand(-140, 140).toFixed(0) + "px");
+            h.style.setProperty("--delay", rand(0, 0.5).toFixed(2) + "s");
+            h.style.setProperty("--d", rand(1.4, 2.4).toFixed(2) + "s");
+            h.addEventListener("animationend", function () {
+              this.remove();
+            });
+          }
+        }
+
+        /* 8. 轻提示 */
+        var toastTimer = null;
+        function toast(msg) {
+          var old = document.querySelector(".toast");
+          if (old) old.remove();
+          var el = document.createElement("div");
+          el.className = "toast";
+          el.setAttribute("role", "status");
+          el.textContent = msg;
+          document.body.appendChild(el);
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () {
+            el.remove();
+          }, 2600);
+        }
+
+      })();
     </script>
+
+
   </body>
 </html>
